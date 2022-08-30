@@ -19,19 +19,30 @@ func GetBooks(c *gin.Context) {
 }
 func GetBook(c *gin.Context) {
 	idInt, _ := utils.GetParamsId(c)
-	book, _ := models.GetBook(idInt)
+	book := &models.Book{}
+	book.GetBook(idInt)
 	c.IndentedJSON(http.StatusOK, book)
 }
+
 func DeleteBook(c *gin.Context) {
 	idInt, _ := utils.GetParamsId(c)
-	book := models.DeleteBook(idInt)
+	book := &models.Book{}
+	err := book.DeleteBook(idInt)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, err)
+		return
+	}
 	c.IndentedJSON(http.StatusOK, book)
 }
 
 func UpdateBook(c *gin.Context) {
 	idInt, _ := utils.GetParamsId(c)
-	updatedBook := &models.Book{}
-	utils.ParseBody(c, updatedBook)
-	book, _ := updatedBook.UpdateBook(idInt)
+	book := &models.Book{}
+	utils.ParseBody(c, book)
+	err := book.UpdateBook(idInt)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, err)
+		return
+	}
 	c.IndentedJSON(http.StatusOK, book)
 }
