@@ -46,3 +46,9 @@ func DeleteBook(id int64) Book {
 	db.Where("ID=?", id).Delete(&book)
 	return book
 }
+
+func (b *Book) UpdateBook(id int64) (Book, error) {
+	err := db.Where("ID=?", id).Updates(&b).Error
+	b.ID = uint(id)
+	return *b, err
+}

@@ -10,5 +10,5 @@ var RegisterBookStoreRoutes = func(r *gin.Engine) {
 	r.GET("/books", controllers.GetBooks)
 	r.GET("/books/:id", controllers.GetBook)
 	r.DELETE("/books/:id", controllers.DeleteBook)
-	//r.PUT("/books/:id", controllers.UpdateBook)
+	r.PATCH("/books/:id", controllers.UpdateBook)
 }

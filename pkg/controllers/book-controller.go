@@ -1,15 +1,11 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lschulzes/bookstore-go/pkg/models"
 	"github.com/lschulzes/bookstore-go/pkg/utils"
 	"net/http"
-	"strconv"
 )
-
-var NewBook models.Book
 
 func CreateBook(c *gin.Context) {
 	newBook := &models.Book{}
@@ -22,28 +18,20 @@ func GetBooks(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, books)
 }
 func GetBook(c *gin.Context) {
-	id := c.Param("id")
-	idInt, err := strconv.ParseInt(id, 10, 64)
-	if err != nil {
-		fmt.Println("Error while parsing")
-	}
+	idInt, _ := utils.GetParamsId(c)
 	book, _ := models.GetBook(idInt)
 	c.IndentedJSON(http.StatusOK, book)
 }
 func DeleteBook(c *gin.Context) {
-	id := c.Param("id")
-	idInt, err := strconv.ParseInt(id, 10, 64)
-	if err != nil {
-		fmt.Println("Error while parsing")
-	}
+	idInt, _ := utils.GetParamsId(c)
 	book := models.DeleteBook(idInt)
 	c.IndentedJSON(http.StatusOK, book)
 }
 
-//func UpdateBook(c *gin.Context) {
-//	id := c.Param("id")
-//	idInt, err := strconv.ParseInt(id, 10, 64)
-//	if err != nil {
-//		fmt.Println("Error while parsing")
-//	}
-//}
+func UpdateBook(c *gin.Context) {
+	idInt, _ := utils.GetParamsId(c)
+	updatedBook := &models.Book{}
+	utils.ParseBody(c, updatedBook)
+	book, _ := updatedBook.UpdateBook(idInt)
+	c.IndentedJSON(http.StatusOK, book)
+}
