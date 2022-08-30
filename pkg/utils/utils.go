@@ -5,11 +5,13 @@ import (
 	"strconv"
 )
 
-func ParseBody(c *gin.Context, x interface{}) {
+func ParseBody(c *gin.Context, x interface{}) error {
 	err := c.BindJSON(x)
 	if err != nil {
-		return
+		return err
+
 	}
+	return nil
 }
 
 func GetParamsId(c *gin.Context) (int64, error) {

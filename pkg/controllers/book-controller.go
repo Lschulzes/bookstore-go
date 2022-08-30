@@ -9,7 +9,11 @@ import (
 
 func CreateBook(c *gin.Context) {
 	newBook := &models.Book{}
-	utils.ParseBody(c, newBook)
+	parseErr := utils.ParseBody(c, newBook)
+	if parseErr != nil {
+		c.IndentedJSON(http.StatusBadRequest, parseErr)
+		return
+	}
 	b := newBook.CreateBook()
 	c.IndentedJSON(http.StatusOK, b)
 }
@@ -20,7 +24,11 @@ func GetBooks(c *gin.Context) {
 func GetBook(c *gin.Context) {
 	idInt, _ := utils.GetParamsId(c)
 	book := &models.Book{}
-	book.GetBook(idInt)
+	err := book.GetBook(idInt)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, err.Error())
+		return
+	}
 	c.IndentedJSON(http.StatusOK, book)
 }
 
@@ -29,7 +37,7 @@ func DeleteBook(c *gin.Context) {
 	book := &models.Book{}
 	err := book.DeleteBook(idInt)
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, err)
+		c.IndentedJSON(http.StatusNotFound, err.Error())
 		return
 	}
 	c.IndentedJSON(http.StatusOK, book)
@@ -38,10 +46,14 @@ func DeleteBook(c *gin.Context) {
 func UpdateBook(c *gin.Context) {
 	idInt, _ := utils.GetParamsId(c)
 	book := &models.Book{}
-	utils.ParseBody(c, book)
+	parseErr := utils.ParseBody(c, book)
+	if parseErr != nil {
+		c.IndentedJSON(http.StatusBadRequest, parseErr)
+		return
+	}
 	err := book.UpdateBook(idInt)
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, err)
+		c.IndentedJSON(http.StatusNotFound, err.Error())
 		return
 	}
 	c.IndentedJSON(http.StatusOK, book)
