@@ -1,7 +1,7 @@
 package config
 
 import (
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -10,7 +10,7 @@ var (
 )
 
 func Connect() {
-	d, err := gorm.Open(mysql.Open("test.db"), &gorm.Config{})
+	d, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}

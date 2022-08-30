@@ -6,9 +6,9 @@ import (
 )
 
 var RegisterBookStoreRoutes = func(r *gin.Engine) {
-	r.POST("/book", controllers.CreateBook)
-	r.GET("/book", controllers.GetBooks)
-	r.GET("/book/:id", controllers.GetBook)
-	r.DELETE("/book/:id", controllers.DeleteBook)
-	r.PUT("/book/:id", controllers.UpdateBook)
+	r.POST("/books", controllers.CreateBook)
+	r.GET("/books", controllers.GetBooks)
+	r.GET("/books/:id", controllers.GetBook)
+	r.DELETE("/books/:id", controllers.DeleteBook)
+	//r.PUT("/books/:id", controllers.UpdateBook)
 }
