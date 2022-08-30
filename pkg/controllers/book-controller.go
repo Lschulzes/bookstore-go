@@ -45,13 +45,13 @@ func DeleteBook(c *gin.Context) {
 
 func UpdateBook(c *gin.Context) {
 	idInt, _ := utils.GetParamsId(c)
-	book := &models.Book{}
-	parseErr := utils.ParseBody(c, book)
+	book, body := &models.Book{}, &models.Book{}
+	parseErr := utils.ParseBody(c, body)
 	if parseErr != nil {
 		c.IndentedJSON(http.StatusBadRequest, parseErr)
 		return
 	}
-	err := book.UpdateBook(idInt)
+	err := book.UpdateBook(idInt, body)
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, err.Error())
 		return

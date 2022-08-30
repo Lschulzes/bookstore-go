@@ -42,11 +42,13 @@ func (b *Book) DeleteBook(id int64) error {
 	return db.First(&b, "ID=?", id).Delete(&b).Error
 }
 
-func (b *Book) UpdateBook(id int64) error {
-	err := db.First(&b, "ID=?", id).Updates(&b).Error
-	if err != nil {
-		return err
-	}
-	b.ID = uint(id)
-	return nil
+func (b *Book) UpdateBook(id int64, body *Book) error {
+	db.First(&b, id)
+
+	err := db.Model(&b).Updates(Book{
+		Author:      body.Author,
+		Name:        body.Name,
+		Publication: body.Publication,
+	}).Error
+	return err
 }
